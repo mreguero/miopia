@@ -5,10 +5,6 @@ player.peasants = MIN(player.mod_living_space, (player.peasants + player.peasant
 
 # TO-DO: Definir max_peasants
 
-modified_income =
-wages = (((def_specs + off_specs )*0.5) + elites * 0.7) * wage_rate
-military_expenses = wages * arms_bonus * race_bonus * max(inspire_army , paladin's_inspiration) * greed
-net_income = modified_income - military_expenses
 player.gold = MAX(0, player.gold + net_income)
 
 total_population = peasants + soldiers + off_specs + off_specs_in_training + def_specs + def_specs_in_training + elites + elites_in_training + thieves + thieves_in_training + wizards
@@ -50,24 +46,7 @@ player.laboratories += pick_next(laboratories)
 player.universities += pick_next(universities)
 player.dungeons += pick_next(dungeons)
 
-available_workers = peasants + rounddown ( prisoners / 2 )
-optimal_workers =  rounddown ( total_jobs * 0.67 )
-jobs_performed          =  min ( available_workers / optimal_workers , 1 )
-building_efficiency       =  [ (0.5 * (1 + % jobs_performed)) * race * scientists * dragon ] * personality
-building_efficiency_change_rate  = # TO-DO
-
 # science
-science_bonus = [ min( science_multiplier * skill_points , cap ) + max( 0, science_multiplier * skill_points - cap ) * diminishing_return_factor ] * race_mod * personality_mod * scientific_insights_mod
 skill_points = number_of_novices + 1.5 * number_of_graduates + 2 * number_of_professors
 scientists_spawn_rate = 9.5 * race_mod * laboratories_effect * revelation_mod
-
 percentage_based_buildings = base_effect * be * min(50%, % of_building) * (100% - min(50%, % of_building))
-
-base_military_efficiency = ( 60 + 40 * ( effective_wage_rate / 100 ) 0.25 ) * gangbang_protection * science_bonus
-change_in_effective_wage_rate =  0.05 * (wage_rate_paid - effective_wage_rate)
-ome = (base_military_efficiency + training_ground_bonus + honor_bonus) * fanaticism_bonus * personality_bonus * onslaught_ritual
-dme = (base_military_efficiency + forts_bonus) * minor_protection * greater_protection * fanaticism * plague * barrier_ritual
-
-gangbang_protection_decay = # TO-DO
-
-total_land = built_land + land_in_progress + barren_land

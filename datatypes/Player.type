@@ -3,23 +3,22 @@ race: Race
 personality: Personality
 honor: Honor
 location: Kingdom
-total_land: =(.barren_land 
-              + .homes 
-              + .farms 
-              + .mills 
+built_land: =(.homes
+              + .farms
+              + .mills
               + .banks
-              + .training_grounds 
-              + .armouries 
-              + .military_barracks 
-              + .forts 
+              + .training_grounds
+              + .armouries
+              + .military_barracks
+              + .forts
               + .guard_stations
-              + .hospitals 
-              + .guilds 
-              + .towers 
-              + .thieves_dens 
+              + .hospitals
+              + .guilds
+              + .towers
+              + .thieves_dens
               + .watch_towers
-              + .laboratories 
-              + .universities 
+              + .laboratories
+              + .universities
               + .dungeons)
   | <= 0: EVENT("player/kill", player=.)
 gold: int
@@ -35,35 +34,137 @@ runes: int
   | < 0: ROLLBACK
 offensive_specialists: int
   | < 0: ROLLBACK
+  default: INITIAL_OFFENSIVE_SPECIALISTS
 defensive_specialists: int
   | < 0: ROLLBACK
+  default: INITIAL_DEFENSIVE_SPECIALISTS
 elites: int
   | < 0: ROLLBACK
+  default: INITIAL_ELITES
 built_land: =(TO-DO)
 land_in_progress: =(SUM(.homes_in_progress)
                     + SUM(.towers_in_progress)
                     + ...)
 homes_bonus: =(.homes * 10)
-mod_living_space: = (((.raw_living_space - .homes_bonus) * .race.living_space_bonus) + .homes_bonus) * .population_science * .honor.population_bonus
+mod_living_space: =((((.raw_living_space - .homes_bonus) * .race.living_space_bonus) + .homes_bonus) * .population_science * .honor.population_bonus)
   where:
-    raw_living_space: =((.built_land + .land_in_progress) * 25) + (.barren_land * 15) + .homes_bonus
-peasants_hourly_change: =(.peasants * ((.birth_rate + .love_and_peace) * .homes_bonus * .location.eowcf * .chastity - .storms)) - .drafted_soldiers - .wizards_trained
-birth_rate: float
+    raw_living_space: =(((.built_land + .land_in_progress) * 25) + (.barren_land * 15) + .homes_bonus)
+peasants_hourly_change: =((.peasants * ((.birth_rate + .love_and_peace) * .homes_bonus * .location.eowcf * .chastity - .storms)) - .drafted_soldiers - .wizards_trained)
+birth_rate: #TO-DO =()
+love_and_peace: toggle(1,1.25)
   default: 1
-love_and_peace: float
+chastity: toggle(1,0.75)
   default: 1
-chastity: float
-  default: 1
-storms: float
+storms: toggle(1,0.75)
   default: 1
 drafted_soldiers: =(0)
 wizards_trained: =(0)
 banks_bonus: =(.banks * 25)
 raw_income: =((2.75 * .employed_peasants) + (2.75/3 * .unemployed_peasants) + (0.625 * .prisoners) + .banks_bonus)
-modified_income: =(.raw_income * .plague * .riots * .bank.percent_bonus * .alchemy * .honor.income_bonus * .race.income_bonus * .personality.income_bonus * .location.dragon.income_modifier * .location.ritual.income_bonus)
-plague: float
+modified_income: =(.raw_income * .plague_active * .riots * .bank.percent_bonus * .alchemy * .honor.income_bonus * .race.income_bonus * .personality.income_bonus * .location.dragon.income_modifier * .location.ritual.income_bonus)
+plague: toggle(1,0.75)
   default: 1
-riots: float
+riots: toggle(1,0.75)
   default: 1
 alchemy: float
   default: 1
+inspire_army: toggle(1,1.25)
+paladins_inspiration: toggle(1,1.35)
+greed: toggle(1,0.75)
+wages: =((((.defensive_specialists + .offensive_specialists )*0.5) + .elites * 0.7) * .wage_rate)
+military_expenses: = (.wages * .armories.military_expense_bonus * .race.miliary_expenses_bonus * max(.inspire_army , .paladins_inspiration) * .greed)
+net_income: =(.modified_income - .military_expenses)
+completed_buildings: #TO-DO
+available_jobs: =((.completed_buildings - .homes) * 25)
+prisoners: int
+  default: 0
+unfilled_jobs: =(max ( .available_jobs - .peasants - rounddown( .prisoners / 2 ) , 0 ))
+employed_peasants: =(min ( .peasants , .available_jobs - rounddown ( .prisoners / 2 ) ))
+unemployed_peasants: =(.peasants - .employed_peasants)
+employment_rate: =((.employed_peasants / .peasants) * 100)
+
+# food
+gluttony: toggle(1,1.25)
+  default: 1
+bushels_eaten: =( .total_population * 0.25 * .race.food_modifier * .gluttony)
+base_food_production: =(((.farms * 70) * .building_efficiency) + (.barren_land * 2))
+fertile_lands: toggle(1,1.25)
+  default: 1
+drought: toggle(1, 0.75)
+  default: 1
+modified_food_production: =(.base_food_production * .production * .fertile_lands * .drought)
+food_remaining: = ((.food * 0.99) + .modified_food_production - .bushels_eaten)
+
+barren_land = int
+  default: INITIAL_BARREN_LAND
+homes = int
+  default: INITIAL_HOMES
+farms = int
+  default: INITIAL_FARMS
+mills = int
+  default: INITIAL_MILLS
+banks = int
+  default: INITIAL_BANKS
+training_grounds = int
+  default: INITIAL_TRAINING_GROUNDS
+armouries = int
+  default: INITIAL_ARMOURIES
+military_barracks = int
+  default: INITIAL_MILITARY_BARRACKS
+forts = int
+  default: INITIAL_FORTS
+guard_stations = int
+  default: INITIAL_GUARD_STATIONS
+hospitals = int
+  default: INITIAL_HOSPITALS
+guilds = int
+  default: INITIAL_GUILDS
+towers = int
+  default: INITIAL_TOWERS
+thieves_dens = int
+  default: INITIAL_THIEVES_DENS
+watch_towers = int
+  default: INITIAL_WATCH_TOWERS
+laboratories = int
+  default: INITIAL_LABORATORIES
+universities = int
+  default: INITIAL_UNIVERSITIES
+dungeons = int
+  default: INITIAL_DUNGEONS
+
+available_workers: =(.peasants + rounddown ( .prisoners / 2 ))
+optimal_workers: =(rounddown ( .total_jobs * 0.67 ))
+jobs_performed: =(min ( .available_workers / .optimal_workers , 1 ))
+building_efficiency: =([ (0.5 * (1 + .jobs_performed)) * .race * .scientists * .dragon ] * .personality)
+building_efficiency_change_rate: = # TO-DO
+
+# science
+science_bonus: =([ min( science_multiplier * skill_points , cap ) + max( 0, science_multiplier * skill_points - cap ) * diminishing_return_factor ] * race_mod * personality_mod * scientific_insights_mod)
+skill_points: =(.number_of_novices + 1.5 * .number_of_graduates + 2 * .number_of_professors)
+scientists_spawn_rate: =(9.5 * .race_mod * .laboratories_effect * .revelation_mod)
+
+# OJITO A ESTO percentage_based_buildings = base_effect * be * min(50%, % of_building) * (100% - min(50%, of_building))
+
+gangbang_protection: float
+  default: 1
+effective_wage_rate: float:
+  default: 1
+  | < 0.5: ROLLBACK
+  | > 2: ROLLBACK
+base_military_efficiency: =( 60 + 40 * ( .effective_wage_rate / 100 ) 0.25 ) * .gangbang_protection * .military)
+change_in_effective_wage_rate =  0.05 * (.wage_rate_paid - .effective_wage_rate)
+fanaticism: toggle(1,1.25)
+  default: 1
+minor_protection: toggle()
+  default:
+greater_protection: toggle()
+  default:
+
+
+ome = (.base_military_efficiency + .training_ground.offensive_bonus + .honor_bonus) * .fanaticism * .personality.offensive_bonus * .location.ritual.offensive_bonus)
+dme = (.base_military_efficiency + .forts.defensive_bonus) * .minor_protection * .greater_protection * -.fanaticism * .plague * .location.ritual.defensive_bonus)
+
+gangbang_protection_decay: float
+  default: 0.2
+
+total_land: =(.built_land + .land_in_progress + .barren_land)

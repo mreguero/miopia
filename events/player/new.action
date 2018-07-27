@@ -7,29 +7,9 @@ player.gold = INITIAL_GOLD * player.race.gold_bonus * player.personality.gold_bo
 player.peasants = INITIAL_PEASANTS * player.race.peasants_bonus * player.personality.peasants_bonus
 player.food = INITIAL_FOOD * player.race.food_bonus * player.personality.food_bonus
 player.runes = INITIAL_RUNES * player.race.runes_bonus * player.personality.runes_bonus
-player.offensive_specialists = INITIAL_OFFENSIVE_SPECIALISTS * player.race.offensive_specialists_bonus * player.personality.offensive_specialists_bonus
-player.defensive_specialists = INITIAL_DEFENSIVE_SPECIALISTS * player.race.defensive_specialists_bonus * player.personality.defensive_specialists_bonus
-player.elites = INITIAL_ELITES * player.race.elites_bonus * player.personality.elites_bonus
-
-# Buildings
-player.barren_land = INITIAL_BARREN_LAND
-player.homes = INITIAL_HOMES
-player.farms = INITIAL_FARMS
-player.mills = INITIAL_MILLS
-player.banks = INITIAL_BANKS
-player.training_grounds = INITIAL_TRAINING_GROUNDS
-player.armouries = INITIAL_ARMOURIES
-player.military_barracks = INITIAL_MILITARY_BARRACKS
-player.forts = INITIAL_FORTS
-player.guard_stations = INITIAL_GUARD_STATIONS
-player.hospitals = INITIAL_HOSPITALS
-player.guilds = INITIAL_GUILDS
-player.towers = INITIAL_TOWERS
-player.thieves_dens = INITIAL_THIEVES_DENS
-player.watch_towers = INITIAL_WATCH_TOWERS
-player.laboratories = INITIAL_LABORATORIES
-player.universities = INITIAL_UNIVERSITIES
-player.dungeons = INITIAL_DUNGEONS
+player.offensive_specialists = INITIAL_OFFENSIVE_SPECIALISTS + player.race.offensive_specialists_bonus * player.personality.offensive_specialists_bonus
+player.defensive_specialists = INITIAL_DEFENSIVE_SPECIALISTS + player.race.defensive_specialists_bonus * player.personality.defensive_specialists_bonus
+player.elites = INITIAL_ELITES + player.race.elites_bonus * player.personality.elites_bonus
 
 # Science
 player.alchemy = INITIAL_ALCHEMY
