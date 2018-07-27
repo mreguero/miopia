@@ -1,9 +1,9 @@
 # economy
-raw_living_space = ((built_land + land_in_progress) * 25) + (barren_land * 15) + (homes * 10)
-mod_living_space = (((raw_living_space - homes_bonus) * race_bonus) + homes_bonus) * population_science * honor_population_bonus
 
-peasants_hourly_change = (current_peasants * ((birth_rate + love & peace) * homes_bonus * eowcf * chastity - storms)) - drafted_soldiers - wizards_trained
-player.peasants = MIN(mod_living_space, (player.peasants + peasants_hourly_change))
+# TO-DO: Tener en cuenta población militar
+player.peasants = MIN(player.mod_living_space, (player.peasants + player.peasants_hourly_change))
+
+# TO-DO: Definir max_peasants
 
 raw_income = (2.75 * employed_peasants) + (2.75/3 * unemployed_peasants) + (0.625 * prisoners) + (banks * 25)
 modified_income = raw_income * plague * riots * bank % bonus * income_sci * honor_income_mod * race_mod * personality_mod * dragon * ritual
@@ -12,7 +12,7 @@ military_expenses = wages * arms_bonus * race_bonus * max(inspire_army , paladin
 net_income = modified_income - military_expenses
 player.gold = MAX(0, player.gold + net_income)
 
-current_population = peasants + soldiers + off_specs + off_specs_in_training + def_specs + def_specs_in_training + elites + elites_in_training + thieves + thieves_in_training + wizards
+total_population = peasants + soldiers + off_specs + off_specs_in_training + def_specs + def_specs_in_training + elites + elites_in_training + thieves + thieves_in_training + wizards
 available_jobs = (completed_buildings - homes) * 25
 unfilled_jobs = max ( available_jobs - peasants - rounddown( prisoners / 2 ) , 0 )
 employed_peasants = min ( peasants , available_jobs - rounddown ( prisoners / 2 ) )
@@ -51,28 +51,24 @@ player.laboratories += pick_next(laboratories)
 player.universities += pick_next(universities)
 player.dungeons += pick_next(dungeons)
 
-Available Workers = Peasants + ROUNDDOWN ( Prisoners / 2 )
-Optimal Workers =  ROUNDDOWN ( Total Jobs * 0.67 )
-Jobs Performed          =  MIN ( Available Workers / Optimal Workers , 1 )
-Building Efficiency       =  [ (0.5 * (1 + % Jobs Performed)) * Race * Scientists * Dragon ] * Personality
-Building Efficiency Change Rate  = TO-DO
+available_workers = peasants + rounddown ( prisoners / 2 )
+optimal_workers =  rounddown ( total_jobs * 0.67 )
+jobs_performed          =  min ( available_workers / optimal_workers , 1 )
+building_efficiency       =  [ (0.5 * (1 + % jobs_performed)) * race * scientists * dragon ] * personality
+building_efficiency_change_rate  = # TO-DO
 
 # science
-Science Bonus = [ MIN( Science Multiplier * Skill points , Cap ) + MAX( 0, Science Multiplier * Skill points - Cap ) * Diminishing Return Factor ] * Race Mod * Personality Mod * Scientific Insights Mod
-Skill points = Number of Novices + 1.5 * Number of Graduates + 2 * Number of Professors
-Scientists Spawn Rate = 9.5 * Race Mod * Laboratories Effect * Revelation Mod
+science_bonus = [ min( science_multiplier * skill_points , cap ) + max( 0, science_multiplier * skill_points - cap ) * diminishing_return_factor ] * race_mod * personality_mod * scientific_insights_mod
+skill_points = number_of_novices + 1.5 * number_of_graduates + 2 * number_of_professors
+scientists_spawn_rate = 9.5 * race_mod * laboratories_effect * revelation_mod
 
-Percentage Based Buildings = Base Effect * BE * MIN(50%, % of building) * (100% - MIN(50%, % of building))
+percentage_based_buildings = base_effect * be * min(50%, % of_building) * (100% - min(50%, % of_building))
 
-food_ = Base Effect * Number of Buildings * BE * Scientists
+base_military_efficiency = ( 60 + 40 * ( effective_wage_rate / 100 ) 0.25 ) * gangbang_protection * science_bonus
+change_in_effective_wage_rate =  0.05 * (wage_rate_paid - effective_wage_rate)
+ome = (base_military_efficiency + training_ground_bonus + honor_bonus) * fanaticism_bonus * personality_bonus * onslaught_ritual
+dme = (base_military_efficiency + forts_bonus) * minor_protection * greater_protection * fanaticism * plague * barrier_ritual
 
-Base Military Efficiency = ( 60 + 40 * ( Effective Wage Rate / 100 ) 0.25 ) * Gangbang Protection * Science Bonus
-Change in Effective Wage Rate =  0.05 * (Wage Rate Paid - Effective Wage Rate)
-OME = (Base Military Efficiency + Training Ground Bonus + Honor Bonus) * Fanaticism Bonus * Personality Bonus * Onslaught Ritual
-DME = (Base Military Efficiency + Forts Bonus) * Minor Protection * Greater Protection * Fanaticism * Plague * Barrier Ritual
-
-gangbang_protection_decay = TO-DO
+gangbang_protection_decay = # TO-DO
 
 total_land = built_land + land_in_progress + barren_land
-
-

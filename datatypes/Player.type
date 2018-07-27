@@ -1,25 +1,69 @@
 name: string
 race: Race
 personality: Personality
+honor: Honor
 location: Kingdom
-total_land: int
+total_land: =(.barren_land 
+              + .homes 
+              + .farms 
+              + .mills 
+              + .banks
+              + .training_grounds 
+              + .armouries 
+              + .military_barracks 
+              + .forts 
+              + .guard_stations
+              + .hospitals 
+              + .guilds 
+              + .towers 
+              + .thieves_dens 
+              + .watch_towers
+              + .laboratories 
+              + .universities 
+              + .dungeons)
   | <= 0: EVENT("player/kill", player=.)
-  | != .barren_land
-       + .homes
-       + .farms
-       + .mills
-       + .banks
-       + .training_grounds
-       + .armouries
-       + .military_barracks
-       + .forts
-       + .guard_stations
-       + .hospitals
-       + .guilds
-       + .towers
-       + .thieves_dens
-       + .watch_towers
-       + .laboratories
-       + .universities
-       + .dungeons: ROLLBACK
-
+gold: int
+  | < 0: ROLLBACK
+total_population: int
+  | > .max_peasants: EVENT("player/desert", player=.)
+  | <= 0: EVENT("player/kill", player=.)
+peasants: int
+  | == 0: EVENT("player/kill", player=.)
+food: int
+  | <= 0: SET(0) && EVENT("player/starving", player=.)
+runes: int
+  | < 0: ROLLBACK
+offensive_specialists: int
+  | < 0: ROLLBACK
+defensive_specialists: int
+  | < 0: ROLLBACK
+elites: int
+  | < 0: ROLLBACK
+built_land: =(TO-DO)
+land_in_progress: =(SUM(.homes_in_progress)
+                    + SUM(.towers_in_progress)
+                    + ...)
+homes_bonus: =(.homes * 10)
+mod_living_space: = (((.raw_living_space - .homes_bonus) * .race.living_space_bonus) + .homes_bonus) * .population_science * .honor.population_bonus
+  where:
+    raw_living_space: =((.built_land + .land_in_progress) * 25) + (.barren_land * 15) + .homes_bonus
+peasants_hourly_change: =(.peasants * ((.birth_rate + .love_and_peace) * .homes_bonus * .location.eowcf * .chastity - .storms)) - .drafted_soldiers - .wizards_trained
+birth_rate: float
+  default: 1
+love_and_peace: float
+  default: 1
+chastity: float
+  default: 1
+storms: float
+  default: 1
+drafted_soldiers: =(0)
+wizards_trained: =(0)
+banks_bonus: =(.banks * 25)
+raw_income: =((2.75 * .employed_peasants) + (2.75/3 * .unemployed_peasants) + (0.625 * .prisoners) + .banks_bonus)
+modified_income: =(.raw_income * .plague * .riots * .bank.percent_bonus * .alchemy * .honor.income_bonus * .race.income_bonus * .personality.income_bonus * .location.dragon.income_modifier * .location.ritual.income_bonus)
+plague: float
+  default: 1
+riots: float
+  default: 1
+alchemy: float
+  default: 1
