@@ -1,52 +1,37 @@
-# economy
+# ECONOMY
+player.peasants = MIN(player.mod_living_space - player.military_population,
+                      player.peasants + player.peasants_hourly_change)
 
-# TO-DO: Tener en cuenta población militar
-player.peasants = MIN(player.mod_living_space, (player.peasants + player.peasants_hourly_change))
+player.gold = MAX(0, player.gold + player.net_income)
 
-# TO-DO: Definir max_peasants
+# FOOD
+player.food = MAX(0, player.food_remaining)
 
-player.gold = MAX(0, player.gold + net_income)
+# MILITARY
+player.offensive_specialists += pick_next(player.offensive_specialists_in_progress)
+player.defensive_specialists += pick_next(player.defensive_specialists_in_progress)
+player.elites += pick_next(player.elites_in_progress)
 
-total_population = peasants + soldiers + off_specs + off_specs_in_training + def_specs + def_specs_in_training + elites + elites_in_training + thieves + thieves_in_training + wizards
-available_jobs = (completed_buildings - homes) * 25
-unfilled_jobs = max ( available_jobs - peasants - rounddown( prisoners / 2 ) , 0 )
-employed_peasants = min ( peasants , available_jobs - rounddown ( prisoners / 2 ) )
-unemployed_peasants = peasants - employed_peasants
-employment_rate = (employed_peasants / peasants) * 100
+# BUILDINGS
+player.barren_land += pick_next(player.barren_land_in_progress)
+player.homes += pick_next(player.homes_in_progress)
+player.farms += pick_next(player.farms_in_progress)
+player.mills += pick_next(player.mills_in_progress)
+player.banks += pick_next(player.banks_in_progress)
+player.training_grounds += pick_next(player.training_grounds_in_progress)
+player.armouries += pick_next(player.armouries_in_progress)
+player.military_barracks += pick_next(player.military_barracks_in_progress)
+player.forts += pick_next(player.forts_in_progress)
+player.guard_stations += pick_next(player.guard_stations_in_progress)
+player.hospitals += pick_next(player.hospitals_in_progress)
+player.guilds += pick_next(player.guilds_in_progress)
+player.towers += pick_next(player.towers_in_progress)
+player.thieves_dens += pick_next(player.thieves_dens_in_progress)
+player.watch_towers += pick_next(player.watch_towers_in_progress)
+player.laboratories += pick_next(player.laboratories_in_progress)
+player.universities += pick_next(player.universities_in_progress)
+player.dungeons += pick_next(player.dungeons_in_progress)
 
-# food
-bushels_eaten = total_population * 0.25 * race_mod * gluttony_mod
-base_food_production     = ((farms * 70) * building_efficiency) + (barren_land * 2)
-modified_food_production = base_food_production * production_science_mod * fertile_lands_mod * drought_mod
-food_remaining = (player.food_stock * 0.99) + modified_food_production - bushels_eaten
-player.food = MAX(0, food_remaining)
+# SCIENCE
+# TO-DO: ADD SCIENTISTS
 
-# military
-player.offensive_specialists += pick_next(new_offensive_specialists)
-player.defensive_specialists += pick_next(new_defensive_specialists)
-player.elites += pick_next(new_elites)
-
-# buildings
-player.barren_land += pick_next(barren_land)
-player.homes += pick_next(homes)
-player.farms += pick_next(farms)
-player.mills += pick_next(mills)
-player.banks += pick_next(banks)
-player.training_grounds += pick_next(training_grounds)
-player.armouries += pick_next(armouries)
-player.military_barracks += pick_next(military_barracks)
-player.forts += pick_next(forts)
-player.guard_stations += pick_next(guard_stations)
-player.hospitals += pick_next(hospitals)
-player.guilds += pick_next(guilds)
-player.towers += pick_next(towers)
-player.thieves_dens += pick_next(thieves_dens)
-player.watch_towers += pick_next(watch_towers)
-player.laboratories += pick_next(laboratories)
-player.universities += pick_next(universities)
-player.dungeons += pick_next(dungeons)
-
-# science
-skill_points = number_of_novices + 1.5 * number_of_graduates + 2 * number_of_professors
-scientists_spawn_rate = 9.5 * race_mod * laboratories_effect * revelation_mod
-percentage_based_buildings = base_effect * be * min(50%, % of_building) * (100% - min(50%, % of_building))

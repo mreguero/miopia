@@ -30,9 +30,42 @@ built_land: =(.homes
 gold: int
   | < 0: ROLLBACK
 
-total_population: int
+offensive_specialists_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+defensive_specialists_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+elites_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+thieves_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+thieves: int
+  default: 0
+
+wizards: int
+  default: 0
+
+soldiers: int
+  default: 0
+
+total_population: =( .peasants
+                     + .soldiers
+                     + .offensive_specialists
+                     + SUM(.offensive_specialists_in_progress)
+                     + .defensive_specialists
+                     + SUM(.defensive_specialists_in_progress)
+                     + .elites
+                     + SUM(.elites_in_progress)
+                     + .thieves
+                     + SUM(.thieves_in_progress)
+                     + .wizards)
   | > .max_peasants: EVENT("player/desert", player=.)
   | <= 0: EVENT("player/kill", player=.)
+
+military_population: =( .total_population - .peasants)
 
 peasants: int
   | == 0: EVENT("player/kill", player=.)
@@ -57,9 +90,78 @@ elites: int
 
 built_land: =(TO-DO)
 
-land_in_progress: =(SUM(.homes_in_progress)
+land_in_progress: =(SUM(.barren_land_in_progress)
+                    + SUM(.homes_in_progress)
+                    + SUM(.farms_in_progress)
+                    + SUM(.mills_in_progress)
+                    + SUM(.banks_in_progress)
+                    + SUM(.training_grounds_in_progress)
+                    + SUM(.armouries_in_progress)
+                    + SUM(.military_barracks_in_progress)
+                    + SUM(.forts_in_progress)
+                    + SUM(.guard_stations_in_progress)
+                    + SUM(.hospitals_in_progress)
+                    + SUM(.guilds_in_progress)
                     + SUM(.towers_in_progress)
-                    + ...)
+                    + SUM(.thieves_dens_in_progress)
+                    + SUM(.watch_towers_in_progress)
+                    + SUM(.laboratories_in_progress)
+                    + SUM(.universities_in_progress)
+                    + SUM(.dungeons_in_progress))
+
+barren_land_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+homes_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+farms_in_progres: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+mills_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+banks_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+training_grounds_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+armouries_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+military_barracks_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+forts_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+guard_stations_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+hospitals_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+guilds_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+towers_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+thieves_dens_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+watch_towers_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+laboratories_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+universities_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+player.dungeons += pick_next(player.dungeons_in_progress)
+
 
 homes_bonus: =(.homes * 10)
 
