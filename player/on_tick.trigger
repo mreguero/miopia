@@ -1,1 +1,2 @@
-type: time(hours=1)
+type: time
+each: 1 hour
