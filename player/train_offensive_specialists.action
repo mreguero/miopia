@@ -1,0 +1,3 @@
+valid_number = (player.total_population > number)
+player.new_offensive_specialists = fill_array(player.new_offensive_specialists, (number * valid_number))
+player.gold -= player.race.offensive_specialist_cost * player.armouries_bonus * player.location.expedient_ritual * player.location_eowcf
