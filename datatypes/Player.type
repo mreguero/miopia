@@ -1,0 +1,25 @@
+name: string
+race: Race
+personality: Personality
+location: Kingdom
+total_land: int
+  | <= 0: EVENT("player/kill", player=.)
+  | != .barren_land
+       + .homes
+       + .farms
+       + .mills
+       + .banks
+       + .training_grounds
+       + .armouries
+       + .military_barracks
+       + .forts
+       + .guard_stations
+       + .hospitals
+       + .guilds
+       + .towers
+       + .thieves_dens
+       + .watch_towers
+       + .laboratories
+       + .universities
+       + .dungeons: ROLLBACK
+
