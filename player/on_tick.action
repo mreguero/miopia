@@ -1,0 +1,74 @@
+data {
+    # economy
+    raw_income = (2.75 * employed_peasants) + (2.75/3 * unemployed_peasants) + (0.625 * prisoners) + (banks * 25)
+    modified_income = raw_income * plague * riots * bank % bonus * income_sci * honor_income_mod * race_mod * personality_mod * dragon * ritual
+    raw_living_space = ((built_land + land_in_progress) * 25) + (barren_land * 15) + (homes * 10)
+    mod_living_space = (((raw_living_space - homes_bonus) * race_bonus) + homes_bonus) * population_science * honor_population_bonus
+    military_expenses = (((def_specs + off_specs )*0.5) + elites * 0.7) * wage_rate * arms_bonus * race_bonus * max(inspire_army , paladin's_inspiration) * greed
+    current_population = peasants + soldiers + off_specs + off_specs_in_training + def_specs + def_specs_in_training + elites + elites_in_training + thieves + thieves_in_training + wizards
+    peasants_hourly_change = (current_peasants * ((birth_rate + love & peace) * homes_bonus * eowcf * chastity - storms)) - drafted_soldiers - wizards_trained
+    available_jobs = (completed_buildings - homes) * 25
+    unfilled_jobs = max ( available_jobs - peasants - rounddown( prisoners / 2 ) , 0 )
+    employed_peasants = min ( peasants , available_jobs - rounddown ( prisoners / 2 ) )
+    unemployed_peasants = peasants - employed_peasants
+    employment_rate = (employed_peasants / peasants) * 100
+
+    # food
+    bushels_eaten = total_population * 0.25 * race_mod * gluttony_mod
+    base_food_production     = ((farms * 70) * building_efficiency) + (barren_land * 2)
+    modified_food_production = base_food_production * production_science_mod * fertile_lands_mod * drought_mod
+    food_remaining = food_stock * 0.99 + modified_food_production - bushels_eaten
+
+    # military
+    offensive_specialists += pick_next(new_offensive_specialists)
+    defensive_specialists += pick_next(new_defensive_specialists)
+    elites += pick_next(new_elites)
+
+    # buildings
+    barren_land += pick_next(barren_land)
+    homes += pick_next(homes)
+    farms += pick_next(farms)
+    mills += pick_next(mills)
+    banks += pick_next(banks)
+    training_grounds += pick_next(training_grounds)
+    armouries += pick_next(armouries)
+    military_barracks += pick_next(military_barracks)
+    forts += pick_next(forts)
+    guard_stations += pick_next(guard_stations)
+    hospitals += pick_next(hospitals)
+    guilds += pick_next(guilds)
+    towers += pick_next(towers)
+    thieves_dens += pick_next(thieves_dens)
+    watch_towers += pick_next(watch_towers)
+    laboratories += pick_next(laboratories)
+    universities += pick_next(universities)
+    dungeons += pick_next(dungeons)
+
+    Available Workers = Peasants + ROUNDDOWN ( Prisoners / 2 )
+    Optimal Workers =  ROUNDDOWN ( Total Jobs * 0.67 )
+    Jobs Performed          =  MIN ( Available Workers / Optimal Workers , 1 )
+    Building Efficiency       =  [ (0.5 * (1 + % Jobs Performed)) * Race * Scientists * Dragon ] * Personality
+    Building Efficiency Change Rate  = TO-DO
+
+    # science
+    Science Bonus = [ MIN( Science Multiplier * Skill points , Cap ) + MAX( 0, Science Multiplier * Skill points - Cap ) * Diminishing Return Factor ] * Race Mod * Personality Mod * Scientific Insights Mod
+    Skill points = Number of Novices + 1.5 * Number of Graduates + 2 * Number of Professors
+    Scientists Spawn Rate = 9.5 * Race Mod * Laboratories Effect * Revelation Mod
+
+    Percentage Based Buildings = Base Effect * BE * MIN(50%, % of building) * (100% - MIN(50%, % of building))
+
+    food_ = Base Effect * Number of Buildings * BE * Scientists
+
+    Base Military Efficiency = ( 60 + 40 * ( Effective Wage Rate / 100 ) 0.25 ) * Gangbang Protection * Science Bonus
+    Change in Effective Wage Rate =  0.05 * (Wage Rate Paid - Effective Wage Rate)
+    OME = (Base Military Efficiency + Training Ground Bonus + Honor Bonus) * Fanaticism Bonus * Personality Bonus * Onslaught Ritual
+    DME = (Base Military Efficiency + Forts Bonus) * Minor Protection * Greater Protection * Fanaticism * Plague * Barrier Ritual
+
+    gangbang_protection_decay = TO-DO
+
+    total_land = built_land + land_in_progress + barren_land
+}
+
+emit {
+    update_kingdom(player_name, total_land, honor)
+}
