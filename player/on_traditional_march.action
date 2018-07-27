@@ -1,0 +1,22 @@
+Condition to Win = (Mod Off * 0.965) / (dst.Mod Def * 1.035) ≥ 0.97
+General Bonus = generals * 0.03
+Mod Off = Raw Offense * (src.OME + General Bonus + src.personality.Personality Bonus) * src.race.Race Bonus
+raw_offense = (src.specialists.offense * offensive_specialists) + (src.elite.offense * elites)
+
+src_offensive_specialists_lost = TO-DO
+src_elites_lost = TO-DO
+
+dst_defensive_specialists_lost = TO-DO
+dst_elites_lost = TO-DO
+dst_troops_lost = dst_defensive_specialists_lost + dst_elites_lost
+
+gains = condition_to_win * MAX ( (dst.total_land *0.2), RANDOM())
+
+src.total_land += gains
+dst.total_land -= gains
+
+src.offensive_specialists -= src_offensive_specialists_lost
+src.elites -= src_elites_lost
+
+dst.defensive_specialists -= dst_defensive_specialists_lost
+dst.elites -= dst_elites_lost
