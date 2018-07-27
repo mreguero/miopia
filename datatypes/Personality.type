@@ -1,0 +1,13 @@
+name: string
+
+science_bonus: float
+  default: 1
+
+income_bonus: float
+  default: 1
+
+building_efficiency_bonus: float
+  default: 1
+
+offensive_bonus: float
+  default: 1

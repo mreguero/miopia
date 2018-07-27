@@ -1,0 +1,24 @@
+name: string
+
+living_space_bonus: float
+  default: 1
+
+income_bonus: float
+  default: 1
+
+miliary_expenses_bonus: float
+  default: 1
+
+food_bonus: float
+  default: 1
+
+building_efficiency_bonus: float
+  default: 1
+
+scientists_spawn_rate_bonus: float
+  default: 1
+
+# TODO: change formulae
+# food modifier
+#building_efficiency: =([ (0.5 * (1 + .jobs_performed)) * .race * .scientists * .dragon ] * .personality)
+#scientists_spawn_rate: =(9.5 * .race_mod * .laboratories_effect * .revelation_mod)

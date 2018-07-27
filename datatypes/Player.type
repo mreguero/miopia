@@ -160,8 +160,8 @@ laboratories_in_progress: array(int, 24)
 universities_in_progress: array(int, 24)
   default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-player.dungeons += pick_next(player.dungeons_in_progress)
-
+dungeons_in_progress: array(int, 24)
+  default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 homes_bonus: =(.homes * 10)
 
@@ -190,7 +190,7 @@ banks_bonus: =(.banks * 25)
 
 raw_income: =((2.75 * .employed_peasants) + (2.75/3 * .unemployed_peasants) + (0.625 * .prisoners) + .banks_bonus)
 
-modified_income: =(.raw_income * .plague_active * .riots * .bank.percent_bonus * .alchemy * .honor.income_bonus * .race.income_bonus * .personality.income_bonus * .location.dragon.income_modifier * .location.ritual.income_bonus)
+modified_income: =(.raw_income * .plague_active * .riots * .bank.percent_bonus * .science * .honor.income_bonus * .race.income_bonus * .personality.income_bonus * .location.dragon.income_modifier * .location.ritual.income_bonus)
 
 plague: toggle(1,0.75)
   default: 1
@@ -232,7 +232,7 @@ employment_rate: =((.employed_peasants / .peasants) * 100)
 gluttony: toggle(1,1.25)
   default: 1
 
-bushels_eaten: =( .total_population * 0.25 * .race.food_modifier * .gluttony)
+bushels_eaten: =( .total_population * 0.25 * .race.food_bonus * .gluttony)
 
 base_food_production: =(((.farms * 70) * .building_efficiency) + (.barren_land * 2))
 
@@ -306,12 +306,15 @@ optimal_workers: =(rounddown ( .total_jobs * 0.67 ))
 
 jobs_performed: =(min ( .available_workers / .optimal_workers , 1 ))
 
-building_efficiency: =([ (0.5 * (1 + .jobs_performed)) * .race * .scientists * .dragon ] * .personality)
+building_efficiency: =([ (0.5 * (1 + .jobs_performed)) * .race.building_efficiency_bonus * .scientists * .dragon ] * .personality.building_efficiency_bonus)
 
 building_efficiency_change_rate: = # TO-DO
-# science
 
-science_bonus: =([ min( science_multiplier * skill_points , cap ) + max( 0, science_multiplier * skill_points - cap ) * diminishing_return_factor ] * race_mod * personality_mod * scientific_insights_mod)
+scientific_insights: toggle(1, 1.25)
+  default: 1
+
+# science
+science_bonus: =([ min( .science_multiplier * .skill_points , .cap ) + max( 0, .science_multiplier * .skill_points - .cap ) * .diminishing_return_factor ] * .race_mod * .personality.science_bonus * .scientific_insights)
 
 skill_points: =(.number_of_novices + 1.5 * .number_of_graduates + 2 * .number_of_professors)
 
@@ -326,9 +329,9 @@ effective_wage_rate: float:
   | < 0.5: ROLLBACK
   | > 2: ROLLBACK
 
-base_military_efficiency: =( 60 + 40 * ( .effective_wage_rate / 100 ) 0.25 ) * .gangbang_protection * .military)
+base_military_efficiency: =( 60 + 40 * ( .effective_wage_rate / 100 ) 0.25 ) * .gangbang_protection * .science)
 
-change_in_effective_wage_rate =  0.05 * (.wage_rate_paid - .effective_wage_rate)
+change_in_effective_wage_rate: =(0.05 * (.wage_rate_paid - .effective_wage_rate))
 
 fanaticism: toggle(1,1.25)
   default: 1
@@ -347,3 +350,4 @@ gangbang_protection_decay: float
   default: 0.2
 
 total_land: =(.built_land + .land_in_progress + .barren_land)
+####
