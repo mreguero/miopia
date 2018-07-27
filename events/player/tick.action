@@ -5,8 +5,7 @@ player.peasants = MIN(player.mod_living_space, (player.peasants + player.peasant
 
 # TO-DO: Definir max_peasants
 
-raw_income = (2.75 * employed_peasants) + (2.75/3 * unemployed_peasants) + (0.625 * prisoners) + (banks * 25)
-modified_income = raw_income * plague * riots * bank % bonus * income_sci * honor_income_mod * race_mod * personality_mod * dragon * ritual
+modified_income =
 wages = (((def_specs + off_specs )*0.5) + elites * 0.7) * wage_rate
 military_expenses = wages * arms_bonus * race_bonus * max(inspire_army , paladin's_inspiration) * greed
 net_income = modified_income - military_expenses
