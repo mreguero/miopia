@@ -1,4 +1,5 @@
-type: user
+type: action
+origin: player
 params:
     - src
     - dst
