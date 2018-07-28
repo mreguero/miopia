@@ -1,0 +1,61 @@
+name: string
+
+quantity: int
+  default: 0
+
+birth_rate_bonus: float
+  default: 1
+
+building_cost_bonus: float
+  default: 1
+
+gold_exploration_bonus: float
+  default: 1
+
+men_exploration_bonus: float
+  default: 1
+
+income_bonus: float
+  default: 1
+
+offensive_efficiency_bonus: float
+  default: 1
+
+military_training_cost_bonus: float
+  default: 1
+
+military_wages_cost_bonus: float
+  default: 1
+
+draft_cost_bonus: float
+  default: 1
+
+attack_time_bonus: float
+  default: 1
+
+defensive_efficiency_bonus: float
+  default: 1
+
+on_attacked_resource_loss_bonus: float
+  default: 1
+
+plague_cure_bonus: float
+  default: 1
+
+military_loss_bonus: float
+  default: 1
+
+thievery_effectiveness_bonus: float
+  default: 1
+
+thievery_operations_losses_bonus: float
+  default: 1
+
+on_thievery_operation_damage_bonus: float
+  default: 1
+
+thievery_preventing_bonus: float
+  default: 1
+
+scientists_spawn_bonus: float
+  default: 1

@@ -247,58 +247,59 @@ modified_food_production: =(.base_food_production * .production * .fertile_lands
 food_remaining: = ((.food * 0.99) + .modified_food_production - .bushels_eaten)
 
 barren_land = int
-  default: INITIAL_BARREN_LAND
+  default: Building(name="barren_land")
 
-homes = int
-  default: INITIAL_HOMES
+homes = Building
+  default: Building(name="Home",
+                    birth_rate_bonus=1.25)
 
-farms = int
-  default: INITIAL_FARMS
+farms = Building
+  default: Building(name="farms")
 
-mills = int
-  default: INITIAL_MILLS
+mills = Building
+  default: Building(name="mills")
 
-banks = int
-  default: INITIAL_BANKS
+banks = Building
+  default: Building(name="banks")
 
-training_grounds = int
-  default: INITIAL_TRAINING_GROUNDS
+training_grounds = Building
+  default: Building(name="training_grounds")
 
-armouries = int
-  default: INITIAL_ARMOURIES
+armouries = Building
+  default: Building(name="armouries")
 
-military_barracks = int
-  default: INITIAL_MILITARY_BARRACKS
+military_barracks = Building
+  default: Building(name="military_barracks")
 
-forts = int
-  default: INITIAL_FORTS
+forts = Building
+  default: Building(name="forts")
 
-guard_stations = int
-  default: INITIAL_GUARD_STATIONS
+guard_stations = Building
+  default: Building(name="guard_stations")
 
-hospitals = int
-  default: INITIAL_HOSPITALS
+hospitals = Building
+  default: Building(name="hospitals")
 
-guilds = int
-  default: INITIAL_GUILDS
+guilds = Building
+  default: Building(name="guilds")
 
-towers = int
-  default: INITIAL_TOWERS
+towers = Building
+  default: Building(name="towers")
 
-thieves_dens = int
-  default: INITIAL_THIEVES_DENS
+thieves_dens = Building
+  default: Building(name="thieves_dens")
 
-watch_towers = int
-  default: INITIAL_WATCH_TOWERS
+watch_towers = Building
+  default: Building(name="watch_towers")
 
-laboratories = int
-  default: INITIAL_LABORATORIES
+laboratories = Building
+  default: Building(name="laboratories")
 
-universities = int
-  default: INITIAL_UNIVERSITIES
+universities = Building
+  default: Building(name="universities")
 
-dungeons = int
-  default: INITIAL_DUNGEONS
+dungeons = Building
+  default: Building(name="dungeons")
 
 available_workers: =(.peasants + rounddown ( .prisoners / 2 ))
 

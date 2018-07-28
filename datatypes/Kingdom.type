@@ -1,0 +1,15 @@
+name: string
+
+coordinate: tuple(int, int)
+  | (x, _) x < 0: ERROR
+  | (_, y) y < 0: ERROR
+
+players: list(Player, max=25)
+  default: []
+
+eowcf: toggle(1, 1.25)
+  default: 1
+
+dragon: Dragon
+
+ritual: Ritual
