@@ -94,8 +94,7 @@ def _(ass, graph=None):
     lhs_name = resolve_name(lhs)
 
     phname = '_' + lhs_name
-    ops = pf.Graph.default_graph.operations
-    if phname not in ops:
+    if phname not in graph.operations:
         old = pf.placeholder(phname)
     else:
         old = ops[phname]
@@ -118,16 +117,14 @@ def _(call, lhs=None, graph=None):
 def _(x, lhs=None, graph=None):
     name = resolve_name(x)
     if name.startswith('_'):
-        ops = pf.Graph.default_graph.operations
-        if name in ops:
-            return ops[name]
+        if name in graph.operations:
+            return graph.operations[name]
         else:
             return pf.placeholder(name)
     elif lhs == name:
         name = '_' + name
-        ops = pf.Graph.default_graph.operations
-        if name in ops:
-            return ops[name]
+        if name in graph.operations:
+            return graph.operations[name]
         else:
             return pf.placeholder(name)
     else:
