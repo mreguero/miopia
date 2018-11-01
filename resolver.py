@@ -97,7 +97,7 @@ def _(ass, graph=None):
     if phname not in graph.operations:
         old = pf.placeholder(phname)
     else:
-        old = ops[phname]
+        old = graph.operations[phname]
 
     (old + unwind(rhs, lhs=lhs_name, graph=graph)).set_name(lhs_name)
 
