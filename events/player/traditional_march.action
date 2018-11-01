@@ -1,6 +1,6 @@
-Condition to Win = (Mod Off * 0.965) / (dst.Mod Def * 1.035) ≥ 0.97
-General Bonus = generals * 0.03
-Mod Off = Raw Offense * (src.OME + General Bonus + src.personality.Personality Bonus) * src.race.Race Bonus
+condition_to_win = ((mod_off * 0.965) / (dst.mod_def * 1.035)) >= 0.97
+general_bonus = generals * 0.03
+mod_off = raw_offense * (src.ome + general_bonus + src.personality.personality_bonus) * src.race.race_bonus
 raw_offense = (src.specialists.offense * offensive_specialists) + (src.elite.offense * elites)
 
 src_offensive_specialists_lost = TO-DO
